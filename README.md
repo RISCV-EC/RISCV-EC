@@ -1,21 +1,109 @@
-# Softprocessor RISCV-EC for Edge Computing Applications
-The first Ecuadorian open-source softprocessor, RISCV-EC, based on the single-core RISC-V architecture.
 
-![image](https://github.com/guianmon99/RISCV-EC/assets/12642226/2c7c6224-93bf-4924-9490-50affb891e3e)
+<img width="862" height="507" alt="RISCV-EC-v1 0" src="https://github.com/user-attachments/assets/5183dcd6-32d4-4fb0-a4b5-6f257f3d20bf" />
 
 
-## Abstract
-Hard-processors are those that have their architecture defined from the factory and this makes them less flexible in the face of architecture changes while softprocessors have the advantage of being modifiable in their architecture allowing continuous improvements to be made in the design if they are Open-source Software. In this paper, we propose a design of the first Ecuadorian open-source software softprocessor called RISCV-EC, which is based on a RISC-V single core architecture. In addition, a performance comparison is carried out between the proposed RISCV-EC softprocessor and other processors such as AVR ATMEGA328P, ARM Cortex M1 of the Raspberry Pi Pico and ARM Cortex A9 Zynq-7000 of Xilinx. This comparison consists of estimating the running time for the Fibonacci sequence algorithm increasing the number of iterations from 0 to 500. Owing to the fact that the RISCV-EC softprocessor is implemented in the FPGA Zynq-7000 SoC - Xilinx, same clock was used as the other processors, in such a way that the comparison is a reflection of the architecture improvement and not of an overclock. The Fibonacci series was programmed on all processors using the same Assembler programming language (ASM) to avoid bias in the results by the compilers. Numerical results show that the RISCV-EC softprocessor has a better performance than the ATMEGA328P AVR processor for any given number of iterations of the Fibonacci series. In the case of the ARM Cortex M1 processor, the RISCV-EC processor is better for a number of iterations greater than 300 of the Fibonacci series. Finally, RISCV-EC presents better running time than the ARM Cortex A9 Zynq-700 processor only for a number of iterations lower than 18.
+# RISCV-EC-v1.0
+The first Ecuadorian open-source RISC-V soft processor for Edge Computing applications.  
+This version corresponds to the architecture and performance analysis presented in the 2025 publication:  
+**“Evaluating the RISCV-EC: A Comparative Analysis of Instruction Efficiency and Power Performance for Edge Computing.”**
 
-### The compared processors and their clock frequencies are as follows:
-- **RISCV-EC: 50MHz**
-- 8bit AVR Microcontroller (Microchip ATmega 328p): 16MHz
-- ARM Cortex-M0+ (Raspberry Pi Pico): 125MHz
-- ARM Cortex-A9 (Zynq-7000): 650MHz
-### The algorithms used in the purchase are the following:
-- Fibonacci Serie
-- Matrix Multiplication
-- RGB to HLB Converter
-    
-## ⭐ When using this resource, please cite the original publication:
-- [Montesdeoca, G., Asanza, V., Estrada, R., Valeriano, I., Muneeb, M.A. (2023). Softprocessor RISCV-EC for Edge Computing Applications. In: Barolli, L. (eds) Innovative Mobile and Internet Services in Ubiquitous Computing . IMIS 2023. Lecture Notes on Data Engineering and Communications Technologies, vol 177. Springer, Cham. https://doi.org/10.1007/978-3-031-35836-4_23](https://link.springer.com/chapter/10.1007/978-3-031-35836-4_23)
+---
+
+## 🧩 Overview
+**RISCV-EC-v1.0** is a soft processor based on a **5-stage, multi-cycle, non-pipelined architecture** implemented in **VHDL** for FPGA devices.  
+It executes each instruction in its entirety before proceeding to the next, focusing on **instruction efficiency**, **execution speed**, and **power-performance balance** for **edge computing** environments.
+
+The processor is implemented and validated on a **Xilinx Zynq-7000 SoC FPGA**, maintaining clock parity with reference processors to ensure unbiased benchmarking.
+
+---
+
+## ⚙️ Microarchitecture
+RISCV-EC follows the standard **RISC-V single-core ISA** and includes the following stages:
+
+1. **Instruction Fetch (IF)** – Fetches instructions from 32-word ROM.  
+2. **Instruction Decode (ID)** – Decodes opcode and operands; handles register and immediate values.  
+3. **Execute (EX)** – Performs arithmetic and logical operations using the ALU.  
+4. **Memory Access (MEM)** – Reads/writes data to the 256-word data memory.  
+5. **Write Back (WB)** – Stores computed results into registers.
+
+### Key Components
+- **ALU:** Performs arithmetic and comparison operations (4-bit control).  
+- **Register File:** 32 general-purpose registers (32-bit).  
+- **Control Unit:** Handles instruction decoding and signal generation.  
+- **Multiplexers:** Manage data flow between immediate values, registers, and memory.
+
+---
+
+## 📊 Performance Evaluation
+Three benchmark algorithms were used to compare RISCV-EC with other processors:
+- **Fibonacci Sequence**
+- **Matrix Multiplication**
+- **RGB to HSL Conversion**
+
+### Compared Architectures and Clock Frequencies
+| Processor | Architecture | Clock | Platform |
+|------------|---------------|--------|------------|
+| **RISCV-EC** | RISC-V 32-bit | 50 MHz | Zynq-7000 SoC FPGA |
+| **ATmega328P** | 8-bit AVR | 16 MHz | Arduino Uno |
+| **ARM Cortex-M0+** | 32-bit ARM | 125 MHz | Raspberry Pi Pico |
+| **ARM Cortex-A9** | 32-bit ARM | 650 MHz | Zynq-7000 SoC |
+
+### Main Findings
+- RISCV-EC demonstrates **fewer executed instructions** compared to the AVR and ARM Cortex-M0+.  
+- It achieves **better instruction efficiency** in serial algorithms such as Fibonacci and matrix multiplication.  
+- **Dynamic power consumption:** ~2.0 mW (FPGA, 50 MHz).  
+- **Logic utilization:** <4% LUTs on Zynq-7000, suitable for low-resource FPGAs.  
+- Although non-pipelined, RISCV-EC achieves a **balanced trade-off between performance and energy efficiency**.
+
+---
+
+## 🧠 Future Work
+Planned improvements include:
+- **Parallelization of J-type instructions**  
+- **Fabrication on TSMC 65 nm technology**  
+- **Dedicated PCB development for real-world testing**  
+- **Integration with TinyML workloads** to evaluate edge AI efficiency  
+
+---
+
+## 🧪 Repository
+All VHDL source code, algorithms, and test benches are available in this repository.  
+Implementation and simulation scripts are compatible with **Xilinx Vivado**.
+
+> Full design schematics and architecture diagrams can be found in the publication and associated supplementary materials.
+
+---
+
+## 🧾 Citation
+If you use this repository or reference its contents, please cite the following publications:
+
+- **2025 Publication:**  
+[  > Asanza, V., Montesdeoca, G., Estrada, R., Mayorca-Torres, D., Safhi, M.H., & Peluffo-Ordóñez, D.H. (2025).  
+  > *Evaluating the RISCV-EC: A Comparative Analysis of Instruction Efficiency and Power Performance for Edge Computing.*  
+  > SN Computer Science, 6(769). https://doi.org/10.1007/s42979-025-04309-2 ](https://link.springer.com/article/10.1007/s42979-025-04309-2) 
+
+- **2023 Publication:**  
+[  > Montesdeoca, G., Asanza, V., Estrada, R., Valeriano, I., & Muneeb, M.A. (2023).  
+  > *Softprocessor RISCV-EC for Edge Computing Applications.*  
+  > In: Barolli, L. (ed.) Innovative Mobile and Internet Services in Ubiquitous Computing (IMIS 2023).  
+  > Lecture Notes on Data Engineering and Communications Technologies, vol. 177. Springer, Cham.  
+  > https://doi.org/10.1007/978-3-031-35836-4_23  ](https://link.springer.com/chapter/10.1007/978-3-031-35836-4_23)
+
+---
+
+## 🧑‍💻 Authors
+- **Víctor Asanza** — SDAS Research Group  
+- **Guillermo Montesdeoca** — ESPOL, Ecuador  
+- **Rebeca Estrada** — ESPOL, Ecuador  
+- **Dagoberto Mayorca-Torres** — Universidad Mariana, Colombia  
+- **Moad Hicham Safhi** — Hassan II University, Morocco  
+- **Diego H. Peluffo-Ordóñez** — Mohammed VI Polytechnic University, Morocco  
+
+---
+
+## 📚 Keywords
+`RISC-V` · `Soft Processor` · `FPGA Implementation` · `Edge Computing` · `Low Power` · `Open Hardware`
+
+---
+
+© 2025 RISCV-EC Project – Open-source release under MIT License.
